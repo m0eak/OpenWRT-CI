@@ -36,3 +36,14 @@ if [[ $WRT_TARGET == *"IPQ"* ]]; then
 	echo "CONFIG_ATH11K_MEM_PROFILE_1G=n" >> ./.config
 	echo "CONFIG_ATH11K_MEM_PROFILE_512M=y" >> ./.config
 fi
+
+#加载自定义配置
+if [ -d "../default-settings" ]; then
+    if [ ! -d "./default-settings" ]; then
+        mv ../default-settings ./default-settings && echo "default-settings加载完成"
+    else
+        echo "目标目录 ./default-settings 已存在，无法移动。"
+    fi
+else
+    echo "目录 ../default-settings 不存在。"
+fi
