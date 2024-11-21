@@ -1,5 +1,5 @@
 #CI项目
-name: QCA-ALL
+name: OWRT-ALL
 
 #CI计划
 on:
@@ -20,6 +20,10 @@ on:
         default: 'false'
         required: false
         type: boolean
+      SSH:
+        description: 'SSH 连接到 Actions'
+        required: false
+        default: 'false'
 
 #CI权限
 permissions: write-all
@@ -32,8 +36,8 @@ jobs:
       fail-fast: false
       #max-parallel: 3
       matrix:
-        TARGET: [IPQ60XX-WIFI-YES, IPQ60XX-WIFI-NO, IPQ807X-WIFI-YES, IPQ807X-WIFI-NO]
-        SOURCE: [VIKINGYFY/immortalwrt]
+        TARGET: [MEDIATEK, ROCKCHIP, X86]
+        SOURCE: [immortalwrt/immortalwrt]
 
     #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/WRT-CORE.yml
@@ -47,16 +51,18 @@ jobs:
       #默认WIFI名
       WRT_WIFI: OWRT
       #默认地址
-      WRT_IP: 192.168.10.1
+      WRT_IP: 192.168.8.1
       #默认密码，仅作提示，修改无用
       WRT_PW: 无
       #源码链接
       WRT_REPO: https://github.com/${{matrix.SOURCE}}.git
       #源码分支
-      WRT_BRANCH: ${{matrix.BRANCH || 'main'}}
+      WRT_BRANCH: ${{matrix.BRANCH || 'master'}}
       #源码名称
       WRT_SOURCE: ${{matrix.SOURCE}}
       #插件调整
       WRT_PACKAGE: ${{inputs.PACKAGE}}
       #仅输出配置文件
       WRT_TEST: ${{inputs.TEST}}
+      #SSH
+      WRT_SSH: ${{inputs.SSH}}

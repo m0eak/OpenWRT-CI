@@ -37,6 +37,9 @@ on:
       WRT_TEST:
         required: false
         type: string
+      WRT_SSH:
+        required: false
+        type: string
 
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -170,6 +173,13 @@ jobs:
           $GITHUB_WORKSPACE/Scripts/Settings.sh
 
           make defconfig -j$(nproc)
+
+      - name: SSH Actions
+        uses: P3TERX/ssh2actions@v1.0.0
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh != 'false') || contains(github.event.action, 'ssh')
+        env:
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       - name: Download Packages
         if: env.WRT_TEST != 'true'

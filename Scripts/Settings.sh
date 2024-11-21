@@ -32,3 +32,14 @@ if [[ $WRT_TARGET == *"IPQ"* ]]; then
 	echo "CONFIG_FEED_nss_packages=n" >> ./.config
 	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
 fi
+
+#加载自定义配置
+if [ -d "../default-settings" ]; then
+    if [ ! -d "./default-settings" ]; then
+        mv ../default-settings ./default-settings && echo "default-settings加载完成"
+    else
+        echo "目标目录 ./default-settings 已存在，无法移动。"
+    fi
+else
+    echo "目录 ../default-settings 不存在。"
+fi
